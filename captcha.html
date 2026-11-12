@@ -29,6 +29,7 @@ p{margin:0 0 18px;color:var(--muted)}
 <script>
 var SITE_KEY = '0x4AAAAAAF-rKiiHlGBao5LD';
 function backToApp(token) {
+  if (window.ReactNativeWebView) { window.ReactNativeWebView.postMessage('token:' + token); return; }
   var url = 'kopala://captcha?token=' + encodeURIComponent(token);
   var go = document.getElementById('go');
   go.href = url;
