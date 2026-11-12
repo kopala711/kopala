@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Kopala check</title>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=kopalaReady" async defer></script>
+<style>
+:root{--blue:#233A8F;--gold:#E8A33D;--ink:#14172B;--muted:#565B73;--bg:#F5F6FA}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--blue);color:#fff;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.card{width:100%;max-width:380px;background:#fff;color:var(--ink);border-radius:20px;padding:28px 20px;text-align:center}
+h1{margin:0 0 4px;font-size:26px;color:var(--blue)}
+p{margin:0 0 18px;color:var(--muted)}
+#widget{display:flex;justify-content:center;min-height:70px}
+#go{display:none;margin-top:18px;width:100%;min-height:52px;border:0;border-radius:26px;background:var(--blue);color:#fff;font:inherit;font-weight:600;text-decoration:none;align-items:center;justify-content:center}
+#err{display:none;margin-top:14px;color:#B42318}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Kopala</h1>
+  <p>Quick check that you're a real person.</p>
+  <div id="widget"></div>
+  <a id="go" href="#">Continue to Kopala</a>
+  <div id="err">That didn't work. Please close this page and try again.</div>
+</div>
+<script>
+var SITE_KEY = '0x4AAAAAAF-rKiiHlGBao5LD';
+function backToApp(token) {
+  var url = 'kopala://captcha?token=' + encodeURIComponent(token);
+  var go = document.getElementById('go');
+  go.href = url;
+  go.style.display = 'flex';
+  location.href = url; // returns to the app; the button is there if the phone asks for a tap
+}
+function kopalaReady() {
+  turnstile.render('#widget', {
+    sitekey: SITE_KEY,
+    callback: backToApp,
+    'error-callback': function () { document.getElementById('err').style.display = 'block'; },
+    'expired-callback': function () { turnstile.reset('#widget'); }
+  });
+}
+</script>
+</body>
+</html>
